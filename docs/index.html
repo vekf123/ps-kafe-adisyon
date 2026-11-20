@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>PS Kafe Adisyon - Yönetim</title>
+<style>
+:root{
+  --bg:#f5f5f7;--panel:#fff;--panel2:#f0f0f3;--line:rgba(0,0,0,.08);--text:#1d1d1f;--muted:#6e6e73;
+  --accent:#007aff;--green:#34c759;--amber:#ff9500;--red:#ff3b30;--shadow:0 1px 2px rgba(0,0,0,.04),0 6px 20px rgba(0,0,0,.06);
+  --header:rgba(245,245,247,.8);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#000;--panel:#1c1c1e;--panel2:#2c2c2e;--line:rgba(255,255,255,.1);--text:#f5f5f7;--muted:#98989d;
+  --accent:#0a84ff;--green:#30d158;--amber:#ff9f0a;--red:#ff453a;--shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.35);
+  --header:rgba(22,22,24,.8);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#000;--panel:#1c1c1e;--panel2:#2c2c2e;--line:rgba(255,255,255,.1);--text:#f5f5f7;--muted:#98989d;
+  --accent:#0a84ff;--green:#30d158;--amber:#ff9f0a;--red:#ff453a;--shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.35);--header:rgba(22,22,24,.8);color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,"SF Pro Text","Inter Variable","Segoe UI Variable","Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:15px;letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+header{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:12px;padding:12px 16px;padding-top:max(12px,env(safe-area-inset-top));background:var(--header);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--line)}
+header h1{font-size:19px;margin:0 auto 0 0;font-weight:700;letter-spacing:-.025em}
+main{max-width:1100px;margin:0 auto;padding:16px 16px 60px}
+button{font:inherit;cursor:pointer;border:none;background:var(--panel2);color:var(--text);border-radius:10px;padding:9px 14px;font-weight:500;transition:transform .1s,filter .15s}
+button:hover{filter:brightness(.96)}button:active{transform:scale(.97)}
+button.primary{background:var(--accent);color:#fff}
+button.ok{background:var(--green);color:#fff}
+button.danger{background:transparent;color:var(--red)}
+button.sm{padding:6px 10px;font-size:13px;border-radius:8px}
+button:disabled{opacity:.5;cursor:default}
+input,select,textarea{font:inherit;width:100%;background:var(--panel2);color:var(--text);border:1px solid transparent;border-radius:10px;padding:11px 12px;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
+label{display:block;font-size:13px;color:var(--muted);font-weight:500;margin:12px 0 5px}
+.muted{color:var(--muted)}
+.login{max-width:380px;margin:12vh auto 0;background:var(--panel);border-radius:24px;padding:32px;box-shadow:var(--shadow);text-align:center}
+.login .logo{width:64px;height:64px;margin:0 auto 14px;border-radius:18px;background:linear-gradient(135deg,var(--accent),#5e5ce6);color:#fff;font-size:30px;display:flex;align-items:center;justify-content:center}
+.login h2{margin:0 0 4px;font-size:24px;letter-spacing:-.03em}
+.login label{text-align:left}
+.login button{width:100%;margin-top:18px;padding:13px;font-size:16px}
+.err{color:var(--red);min-height:20px;margin-top:10px;font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:14px}
+.stat{background:var(--panel);border-radius:16px;padding:12px 16px;box-shadow:var(--shadow)}
+.stat .l{font-size:12px;color:var(--muted);font-weight:500}.stat .v{font-size:26px;font-weight:700;letter-spacing:-.03em}
+.tools{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.tools input{flex:1;min-width:180px}
+.lic{background:var(--panel);border-radius:20px;padding:16px 18px;box-shadow:var(--shadow);margin-bottom:12px}
+.lic .top{display:flex;gap:10px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.lic .name{font-size:18px;font-weight:700;letter-spacing:-.02em}
+.lic .info{color:var(--muted);font-size:13px;margin-top:3px}
+.pill{display:inline-block;font-size:12px;font-weight:600;padding:4px 10px;border-radius:99px;white-space:nowrap}
+.pill.g{background:color-mix(in srgb,var(--green) 18%,transparent);color:var(--green)}
+.pill.a{background:color-mix(in srgb,var(--amber) 20%,transparent);color:var(--amber)}
+.pill.r{background:color-mix(in srgb,var(--red) 16%,transparent);color:var(--red)}
+.pill.m{background:var(--panel2);color:var(--muted)}
+.keyrow{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+.key{user-select:all;cursor:text;font-family:ui-monospace,"SF Mono",Consolas,monospace;font-size:14px;background:var(--panel2);padding:6px 10px;border-radius:8px;letter-spacing:.04em}
+.acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.devs{margin-top:12px;border-top:1px solid var(--line);padding-top:10px;font-size:13px}
+.dev{display:flex;justify-content:space-between;gap:8px;padding:5px 0;align-items:center}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:var(--muted)}
+.dot.on{background:var(--green)}
+.modal-bg{position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.35);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:flex-start;justify-content:center;padding:24px 12px;overflow:auto}
+.modal{background:var(--panel);border-radius:22px;padding:22px;width:min(480px,100%);box-shadow:0 24px 70px rgba(0,0,0,.3)}
+.modal h3{margin:0 0 6px;font-size:22px;letter-spacing:-.025em}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
+.foot{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+.bigkey{font-family:ui-monospace,"SF Mono",Consolas,monospace;font-size:22px;text-align:center;background:var(--panel2);border-radius:14px;padding:16px;letter-spacing:.06em;margin:12px 0;user-select:all}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(30,30,32,.9);color:#fff;padding:12px 20px;border-radius:99px;display:none;z-index:40;font-weight:500}
+.empty{text-align:center;color:var(--muted);padding:40px 0}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="modal"></div>
+<div id="toast"></div>
+<script>
+const SUPABASE_URL = 'https://mxwyuptlnjaufjmnpbdh.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_TuTLdwR3XK_YnkuDVEOOiw_3B3QqQ43';
+const SKEY = 'psk_admin_session';
+// E-posta her cihazda sadece ilk girişte sorulur ve hatırlanır; sonra sadece şifre istenir.
+// (E-posta bu dosyaya yazılmaz, çünkü panel internette herkese açık bir adreste duracak.)
+const EKEY = 'psk_admin_email';
+const savedEmail = () => { try { return localStorage.getItem(EKEY) || ''; } catch (e) { return ''; } };
+const DAY = 864e5;
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fmtDate = d => d ? new Date(d).toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', year: 'numeric' }) : '-';
+function ago(d) {
+  if (!d) return '-';
+  const m = Math.round((Date.now() - new Date(d)) / 60000);
+  if (m < 2) return 'şimdi'; if (m < 60) return m + ' dk önce';
+  const h = Math.round(m / 60); if (h < 24) return h + ' saat önce';
+  return Math.round(h / 24) + ' gün önce';
+}
+let toastT;
+function toast(m) { const t = $('#toast'); t.textContent = m; t.style.display = 'block'; clearTimeout(toastT); toastT = setTimeout(() => t.style.display = 'none', 3000); }
+
+/* ---------- Oturum ---------- */
+let session = null;
+try { session = JSON.parse(localStorage.getItem(SKEY)); } catch (e) {}
+function saveSession(s) { session = s; try { s ? localStorage.setItem(SKEY, JSON.stringify(s)) : localStorage.removeItem(SKEY); } catch (e) {} }
+async function auth(grant, body) {
+  const r = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=${grant}`, {
+    method: 'POST', headers: { apikey: SUPABASE_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify(body)
+  });
+  const j = await r.json();
+  if (!r.ok) throw new Error(j.error_description || j.msg || j.message || 'Giriş başarısız');
+  saveSession({ access_token: j.access_token, refresh_token: j.refresh_token, expires_at: Date.now() + j.expires_in * 1000, email: j.user?.email });
+}
+async function token() {
+  if (!session) throw new Error('oturum yok');
+  if (Date.now() > session.expires_at - 60000) await auth('refresh_token', { refresh_token: session.refresh_token });
+  return session.access_token;
+}
+async function api(path, opts = {}) {
+  const t = await token();
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, Object.assign({}, opts, {
+    headers: Object.assign({ apikey: SUPABASE_KEY, Authorization: 'Bearer ' + t, 'Content-Type': 'application/json', Prefer: 'return=representation' }, opts.headers || {})
+  }));
+  if (r.status === 401) { saveSession(null); render(); throw new Error('Oturum süresi doldu'); }
+  const txt = await r.text();
+  const j = txt ? JSON.parse(txt) : null;
+  if (!r.ok) throw new Error((j && (j.message || j.hint)) || 'HTTP ' + r.status);
+  return j;
+}
+
+/* ---------- Veri ---------- */
+let LICS = [], query = '', filter = 'all';
+async function load() {
+  LICS = await api('psk_licenses?select=*,psk_devices(*)&order=created_at.desc');
+  renderList();
+}
+function status(l) {
+  const left = Math.ceil((new Date(l.expires_at) - Date.now()) / DAY);
+  if (!l.active) return { k: 'suspended', t: 'Durduruldu', c: 'r', left };
+  if (left < 0) return { k: 'expired', t: 'Süresi doldu', c: 'r', left };
+  if (left <= 7) return { k: 'soon', t: left + ' gün kaldı', c: 'a', left };
+  return { k: 'active', t: 'Aktif · ' + left + ' gün', c: 'g', left };
+}
+function genKey() {
+  const A = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  const b = crypto.getRandomValues(new Uint8Array(12));
+  const s = Array.from(b, x => A[x % A.length]).join('');
+  return `PSK-${s.slice(0, 4)}-${s.slice(4, 8)}-${s.slice(8, 12)}`;
+}
+function addPeriod(base, unit, n) {
+  const d = new Date(Math.max(Date.now(), new Date(base || 0).getTime()));
+  if (unit === 'day') d.setDate(d.getDate() + n);
+  else if (unit === 'month') d.setMonth(d.getMonth() + n);
+  else d.setFullYear(d.getFullYear() + n);
+  return d.toISOString();
+}
+
+/* ---------- Ekranlar ---------- */
+function render() {
+  if (!session) return renderLogin();
+  $('#app').innerHTML = `<header><h1>🎮 Lisans Yönetimi</h1>
+    <button class="sm" onclick="load().then(()=>toast('Yenilendi'))">↻</button>
+    <button class="sm" onclick="logout()">Çıkış</button></header>
+    <main><div class="stats" id="stats"></div>
+      <div class="tools"><input placeholder="Kafe, isim, telefon, şehir veya lisans ara…" oninput="query=this.value;renderList()">
+        <select style="width:auto" onchange="filter=this.value;renderList()">
+          <option value="all">Hepsi</option><option value="active">Aktif</option><option value="soon">Yakında bitecek</option>
+          <option value="expired">Süresi dolan</option><option value="suspended">Durdurulan</option></select>
+        <button class="primary" onclick="newLicense()">＋ Yeni Kafe</button></div>
+      <div id="list"><div class="empty">Yükleniyor…</div></div></main>`;
+  load().catch(e => { $('#list').innerHTML = `<div class="empty">Hata: ${esc(e.message)}<br><br>Bu hesap yönetici olarak tanımlı olmayabilir (2-yonetici-yap.sql).</div>`; });
+}
+function renderLogin() {
+  $('#app').innerHTML = `<div class="login"><div class="logo">🎮</div><h2>Yönetim Paneli</h2><p class="muted">PS Kafe Adisyon lisansları</p>
+    ${savedEmail()
+      ? `<input id="em" type="email" autocomplete="username" value="${esc(savedEmail())}" style="display:none">`
+      : `<label>E-posta <span class="muted">(sadece ilk girişte)</span></label><input id="em" type="email" autocomplete="username">`}
+    <label>Şifre</label><input id="pw" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()">
+    ${savedEmail() ? `<p class="muted" style="font-size:12px;margin:10px 0 0">${esc(savedEmail())} · <a href="#" onclick="forgetEmail();return false" style="color:var(--accent)">farklı hesap</a></p>` : ''}
+    <button class="primary" id="lb" onclick="login()">Giriş Yap</button><div class="err" id="le"></div></div>`;
+  (savedEmail() ? $('#pw') : $('#em')).focus();
+}
+async function login() {
+  $('#lb').disabled = true; $('#le').textContent = '';
+  const email = $('#em').value.trim();
+  try {
+    await auth('password', { email, password: $('#pw').value });
+    try { localStorage.setItem(EKEY, email); } catch (e) {}
+    render();
+  } catch (e) {
+    $('#le').textContent = e.message === 'Invalid login credentials' ? (savedEmail() ? 'Şifre hatalı.' : 'E-posta veya şifre hatalı.') : e.message;
+    $('#lb').disabled = false; $('#pw').select();
+  }
+}
+function forgetEmail() { try { localStorage.removeItem(EKEY); } catch (e) {} renderLogin(); }
+function logout() { saveSession(null); render(); }
+
+function renderList() {
+  const st = LICS.map(status);
+  const n = k => st.filter(s => s.k === k).length;
+  $('#stats').innerHTML = [['Toplam kafe', LICS.length], ['Aktif', n('active') + n('soon')], ['7 günde bitecek', n('soon')], ['Süresi dolan', n('expired')], ['Durdurulan', n('suspended')]]
+    .map(([l, v]) => `<div class="stat"><div class="l">${l}</div><div class="v">${v}</div></div>`).join('');
+  const q = query.toLowerCase();
+  const list = LICS.filter((l, i) => (filter === 'all' || st[i].k === filter) &&
+    (!q || [l.cafe_name, l.owner_name, l.phone, l.city, l.license_key].join(' ').toLowerCase().includes(q)));
+  $('#list').innerHTML = list.length ? list.map(licHTML).join('') : `<div class="empty">${LICS.length ? 'Eşleşen kafe yok.' : 'Henüz kafe yok. "＋ Yeni Kafe" ile ilk lisansı oluşturun.'}</div>`;
+}
+function licHTML(l) {
+  const s = status(l), devs = l.psk_devices || [];
+  return `<div class="lic"><div class="top"><div>
+      <div class="name">${esc(l.cafe_name)}</div>
+      <div class="info">${[l.owner_name, l.phone, l.city].filter(Boolean).map(esc).join(' · ') || '&nbsp;'}</div>
+    </div><span class="pill ${s.c}">${s.t}</span></div>
+    <div class="keyrow"><span class="key">${esc(l.license_key)}</span><button class="sm" onclick="copyKey('${l.license_key}')">Kopyala</button>
+      <span class="muted" style="font-size:13px">Bitiş: <b>${fmtDate(l.expires_at)}</b></span></div>
+    ${l.notes ? `<div class="info" style="margin-top:8px">📝 ${esc(l.notes)}</div>` : ''}
+    <div class="acts">
+      <button class="sm" onclick="extend('${l.id}','month',1)">+1 Ay</button>
+      <button class="sm" onclick="extend('${l.id}','month',3)">+3 Ay</button>
+      <button class="sm" onclick="extend('${l.id}','year',1)">+1 Yıl</button>
+      <button class="sm" onclick="toggleActive('${l.id}')">${l.active ? '⏸ Durdur' : '▶ Aktif et'}</button>
+      <button class="sm" onclick="editLicense('${l.id}')">✎ Düzenle</button>
+      <button class="sm danger" onclick="delLicense('${l.id}')">Sil</button>
+    </div>
+    <div class="devs"><div class="muted" style="margin-bottom:4px">Bilgisayarlar (${devs.length}/${l.max_devices})
+      ${devs.length ? `<button class="sm danger" onclick="resetDevices('${l.id}')">Cihazları sıfırla</button>` : ''}</div>
+      ${devs.length ? devs.map(d => {
+        const on = Date.now() - new Date(d.last_seen) < 4 * 3600e3;
+        return `<div class="dev"><span><span class="dot ${on ? 'on' : ''}"></span>${esc(d.device_name || 'Bilgisayar')} <span class="muted">· v${esc(d.app_version || '?')} · ${ago(d.last_seen)}</span>${d.blocked ? ' <span class="pill r">engelli</span>' : ''}</span>
+          <button class="sm" onclick="toggleDevice('${d.id}',${!d.blocked})">${d.blocked ? 'Engeli kaldır' : 'Engelle'}</button></div>`;
+      }).join('') : '<div class="muted">Henüz bir bilgisayarda etkinleştirilmedi.</div>'}</div>
+  </div>`;
+}
+const byId = id => LICS.find(l => l.id === id);
+async function patch(id, body, msg) {
+  try { await api('psk_licenses?id=eq.' + id, { method: 'PATCH', body: JSON.stringify(body) }); await load(); toast(msg); }
+  catch (e) { toast('Hata: ' + e.message); }
+}
+function extend(id, unit, n) {
+  const l = byId(id), to = addPeriod(l.expires_at, unit, n);
+  if (!confirm(`${l.cafe_name}\nYeni bitiş tarihi: ${fmtDate(to)}\nOnaylıyor musunuz?`)) return;
+  patch(id, { expires_at: to, active: true }, 'Üyelik uzatıldı: ' + fmtDate(to));
+}
+function toggleActive(id) {
+  const l = byId(id);
+  if (l.active && !confirm(`${l.cafe_name} durdurulsun mu?\nProgram bir sonraki kontrolde (en geç 3 saat içinde, ya da açılışta) kilitlenir.`)) return;
+  patch(id, { active: !l.active }, l.active ? 'Durduruldu' : 'Aktif edildi');
+}
+async function delLicense(id) {
+  const l = byId(id);
+  if (!confirm(`${l.cafe_name} lisansı tamamen SİLİNSİN mi? Bu geri alınamaz.\n(Geçici durdurmak için "Durdur" kullanın.)`)) return;
+  try { await api('psk_licenses?id=eq.' + id, { method: 'DELETE' }); await load(); toast('Silindi'); } catch (e) { toast('Hata: ' + e.message); }
+}
+async function resetDevices(id) {
+  if (!confirm('Bu lisansa bağlı bilgisayarlar silinsin mi? (Kafe bilgisayar değiştirdiyse kullanın. Program yeni bilgisayarda tekrar etkinleştirilebilir.)')) return;
+  try { await api('psk_devices?license_id=eq.' + id, { method: 'DELETE' }); await load(); toast('Cihazlar sıfırlandı'); } catch (e) { toast('Hata: ' + e.message); }
+}
+async function toggleDevice(id, blocked) {
+  try { await api('psk_devices?id=eq.' + id, { method: 'PATCH', body: JSON.stringify({ blocked }) }); await load(); toast(blocked ? 'Bilgisayar engellendi' : 'Engel kaldırıldı'); } catch (e) { toast('Hata: ' + e.message); }
+}
+// Kopyalama: dosyadan açılan sayfalarda navigator.clipboard çalışmayabildiği için yedek yöntem de var
+function copyKey(k) {
+  const fallback = () => {
+    const t = document.createElement('textarea');
+    t.value = k; t.setAttribute('readonly', ''); t.style.position = 'fixed'; t.style.opacity = '0';
+    document.body.appendChild(t); t.select(); t.setSelectionRange(0, k.length);
+    let ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+    t.remove();
+    toast(ok ? 'Lisans kopyalandı: ' + k : 'Kopyalanamadı, anahtarı seçip Ctrl+C yapın');
+  };
+  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(k).then(() => toast('Lisans kopyalandı: ' + k), fallback);
+  else fallback();
+}
+
+/* ---------- Yeni / düzenle ---------- */
+function form(l) {
+  return `<label>Kafe adı *</label><input id="f_cafe" value="${esc(l.cafe_name || '')}">
+    <div class="grid2"><div><label>Yetkili adı</label><input id="f_owner" value="${esc(l.owner_name || '')}"></div>
+      <div><label>Telefon</label><input id="f_phone" type="tel" value="${esc(l.phone || '')}"></div></div>
+    <div class="grid2"><div><label>Şehir</label><input id="f_city" value="${esc(l.city || '')}"></div>
+      <div><label>Bilgisayar sayısı</label><input id="f_max" type="number" min="1" value="${l.max_devices || 1}"></div></div>
+    <label>Not</label><textarea id="f_notes" rows="2">${esc(l.notes || '')}</textarea>`;
+}
+function readForm() {
+  const cafe = $('#f_cafe').value.trim();
+  if (!cafe) { toast('Kafe adı gerekli'); return null; }
+  return { cafe_name: cafe, owner_name: $('#f_owner').value.trim() || null, phone: $('#f_phone').value.trim() || null,
+    city: $('#f_city').value.trim() || null, max_devices: Math.max(1, parseInt($('#f_max').value) || 1), notes: $('#f_notes').value.trim() || null };
+}
+function modal(html) { $('#modal').innerHTML = html ? `<div class="modal-bg" onclick="if(event.target===this)modal('')"><div class="modal">${html}</div></div>` : ''; }
+function newLicense() {
+  modal(`<h3>Yeni Kafe</h3>${form({})}
+    <label>Başlangıç süresi</label><select id="f_period">
+      <option value="day:14">14 gün ücretsiz deneme</option><option value="month:1" selected>1 ay</option>
+      <option value="month:3">3 ay</option><option value="month:6">6 ay</option><option value="year:1">1 yıl</option></select>
+    <div class="foot"><button onclick="modal('')">Vazgeç</button><button class="primary" id="sv" onclick="createLicense()">Oluştur</button></div>`);
+  $('#f_cafe').focus();
+}
+async function createLicense() {
+  const f = readForm(); if (!f) return;
+  const [unit, n] = $('#f_period').value.split(':');
+  const body = Object.assign(f, { license_key: genKey(), expires_at: addPeriod(null, unit, +n), plan: unit === 'day' ? 'deneme' : unit + n, active: true });
+  $('#sv').disabled = true;
+  try {
+    const [l] = await api('psk_licenses', { method: 'POST', body: JSON.stringify(body) });
+    await load();
+    const msg = `Merhaba, PS Kafe Adisyon programınızın lisans anahtarı:\n\n${l.license_key}\n\nProgramı açınca bu anahtarı yazıp "Etkinleştir"e basmanız yeterli. Üyelik bitiş tarihi: ${fmtDate(l.expires_at)}`;
+    modal(`<h3>✅ ${esc(l.cafe_name)} oluşturuldu</h3><p class="muted">Bu lisans anahtarını kafeye verin:</p>
+      <div class="bigkey">${esc(l.license_key)}</div>
+      <div class="foot" style="justify-content:space-between">
+        <button onclick="copyKey('${l.license_key}')">Kopyala</button>
+        ${l.phone ? `<a href="https://wa.me/${esc(l.phone.replace(/\D/g, '').replace(/^0/, '90'))}?text=${encodeURIComponent(msg)}" target="_blank"><button class="ok">WhatsApp ile gönder</button></a>` : ''}
+        <button class="primary" onclick="modal('')">Tamam</button></div>`);
+  } catch (e) { toast('Hata: ' + e.message); $('#sv').disabled = false; }
+}
+function editLicense(id) {
+  const l = byId(id);
+  modal(`<h3>Düzenle</h3>${form(l)}
+    <label>Bitiş tarihi</label><input id="f_exp" type="date" value="${new Date(l.expires_at).toLocaleDateString('sv-SE')}">
+    <div class="foot"><button onclick="modal('')">Vazgeç</button><button class="primary" onclick="saveEdit('${id}')">Kaydet</button></div>`);
+}
+function saveEdit(id) {
+  const f = readForm(); if (!f) return;
+  const d = $('#f_exp').value;
+  if (d) f.expires_at = new Date(d + 'T23:59:59').toISOString();
+  modal(''); patch(id, f, 'Kaydedildi');
+}
+render();
+</script>
+</body>
+</html>
