@@ -222,7 +222,7 @@ function licHTML(l) {
       ${devs.length ? `<button class="sm danger" onclick="resetDevices('${l.id}')">Cihazları sıfırla</button>` : ''}</div>
       ${devs.length ? devs.map(d => {
         const on = Date.now() - new Date(d.last_seen) < 4 * 3600e3;
-        return `<div class="dev"><span><span class="dot ${on ? 'on' : ''}"></span>${esc(d.device_name || 'Bilgisayar')} <span class="muted">· v${esc(d.app_version || '?')} · ${ago(d.last_seen)}</span>${d.blocked ? ' <span class="pill r">engelli</span>' : ''}</span>
+        return `<div class="dev"><span><span class="dot ${on ? 'on' : ''}"></span>${esc(d.device_name || 'Bilgisayar')} <span class="muted">· v${esc(d.app_version || '?')} · ${ago(d.last_seen)}${d.last_ip ? ' · IP ' + esc(d.last_ip) : ''}</span>${d.blocked ? ' <span class="pill r">engelli</span>' : ''}</span>
           <button class="sm" onclick="toggleDevice('${d.id}',${!d.blocked})">${d.blocked ? 'Engeli kaldır' : 'Engelle'}</button></div>`;
       }).join('') : '<div class="muted">Henüz bir bilgisayarda etkinleştirilmedi.</div>'}</div>
   </div>`;
